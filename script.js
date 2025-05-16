@@ -1,8 +1,8 @@
-// pytania z których składa się cały quiz
-const pytania = [
+// Lista pytań quizu
+const questions = [
   { 
-      pytanie: "W którym roku była bitwa pod termopilami?", // pytanie nr. 1
-      odp: [
+      questionText: "W którym roku była bitwa pod Termopilami?", // Pytanie nr 1
+      answers: [
         { text: "470 p.n.e.", correct: false},
         { text: "480 p.n.e.", correct: true},
         { text: "477 p.n.e.", correct: false},
@@ -10,8 +10,8 @@ const pytania = [
       ]
   },
   {
-    pytanie: "Jak nazywał się dowódca który dowodził wojskami po stronie Sparty w bitwie pod termopilami?", // pytanie nr. 2
-    odp: [
+    questionText: "Jak nazywał się dowódca, który dowodził wojskami Sparty w bitwie pod Termopilami?", // Pytanie nr 2
+    answers: [
       { text: "Leonidas", correct: true},
       { text: "Kserkses", correct: false},
       { text: "Temistokles", correct: false},
@@ -19,161 +19,217 @@ const pytania = [
     ]
   },
   {
-  pytanie: "Najważniejszy bóg Grecki", // pytanie nr. 3
-  odp: [
-    { text: "Posejdon", correct: false},
-    { text: "Ares", correct: false},
-    { text: "Afrodyta", correct: false},
-    { text: "Zeus", correct: true},
-  ]
-  },
-  {
-    pytanie: "Kto był twórcą filozofii sokratycznej w starożytnej Grecji?", // pytanie nr. 4
-    odp: [
-      { text: "Sokrates", correct: true},
-      { text: "Platon", correct: false},
-      { text: "Arystoteles", correct: false},
-      { text: "Pythagoras", correct: false},
+    questionText: "Najważniejszy bóg grecki", // Pytanie nr 3
+    answers: [
+      { text: "Posejdon", correct: false},
+      { text: "Ares", correct: false},
+      { text: "Afrodyta", correct: false},
+      { text: "Zeus", correct: true},
     ]
   },
   {
-    pytanie: "W jakim mieście odbyły się słynne igrzyska olimpijskie w starożytnej Grecji?", // pytanie nr. 5
-    odp: [
+    questionText: "Kto był twórcą filozofii sokratycznej w starożytnej Grecji?", // Pytanie nr 4
+    answers: [
+      { text: "Sokrates", correct: true},
+      { text: "Platon", correct: false},
+      { text: "Arystoteles", correct: false},
+      { text: "Pitagoras", correct: false},
+    ]
+  },
+  {
+    questionText: "W jakim mieście odbyły się słynne igrzyska olimpijskie w starożytnej Grecji?", // Pytanie nr 5
+    answers: [
       { text: "Ateny", correct: false},
       { text: "Olimpia", correct: true},
       { text: "Rodos", correct: false},
       { text: "Sparta", correct: false},
     ]
+  },
+  {
+    questionText: "Jak nazywało się główne miasto-państwo znane z demokracji?", // Pytanie nr 6 
+    answers: [
+      { text: "Sparta", correct: false},
+      { text: "Ateny", correct: true},
+      { text: "Korynt", correct: false},
+      { text: "Teby", correct: false},
+    ]
+  },
+  {
+    questionText: "Kto był bogiem wojny w mitologii greckiej?", // Pytanie nr 7 
+    answers: [
+      { text: "Zeus", correct: false},
+      { text: "Ares", correct: true},
+      { text: "Apollo", correct: false},
+      { text: "Hefajstos", correct: false},
+    ]
+  },
+  {
+    questionText: "Jak nazywał się poemat epicki Homera o wojnie trojańskiej?", // Pytanie nr 8 
+    answers: [
+      { text: "Odyseja", correct: false},
+      { text: "Iliada", correct: true},
+      { text: "Eneida", correct: false},
+      { text: "Argonautica", correct: false},
+    ]
+  },
+  {
+    questionText: "W jakim mieście znajdowała się Wyrocznia Delficka?", // Pytanie nr 9 
+    answers: [
+      { text: "Ateny", correct: false},
+      { text: "Delfy", correct: true},
+      { text: "Sparta", correct: false},
+      { text: "Olimpia", correct: false},
+    ]
+  },
+  {
+    questionText: "Jak nazywał się teatr na wzgórzu Akropolu w Atenach?", // Pytanie nr 10 
+    answers: [
+      { text: "Teatr Dionizosa", correct: true},
+      { text: "Teatr Apollina", correct: false},
+      { text: "Teatr Zeusa", correct: false},
+      { text: "Teatr Posejdona", correct: false},
+    ]
   }
 ];
 
-// pobieranie elementów DOM
-const pytanieEl = document.getElementById("pytanie");
-const wybierzodp = document.getElementById("wybierzodp");
-const przyciskDalej = document.getElementById("dalej");
+// Pobieranie elementów DOM
+const questionElement = document.getElementById("pytanie");
+const answerContainer = document.getElementById("wybierzodp");
+const nextButton = document.getElementById("dalej");
+const restartButton = document.getElementById("restart");
 
-// numer aktualnego pytania
-let currentquestionindex = 0;
-let correctAnswers = 0; // Liczba poprawnych odpowiedzi
-let odpowiedziUzytkownika = []; // Tablica do przechowywania odpowiedzi użytkownika
+// Sprawdzanie, czy elementy DOM istnieją
+if (!questionElement || !answerContainer || !nextButton || !restartButton) {
+  console.error("Brak jednego lub więcej elementów DOM. Sprawdź ID: pytanie, wybierzodp, dalej, restart.");
+} else {
+  console.log("Wszystkie elementy DOM zostały poprawnie załadowane.");
+}
 
-// funkcja rozpoczynająca quiz
+// Indeks bieżącego pytania
+let currentQuestionIndex = 0;
+let correctCount = 0; // Licznik poprawnych odpowiedzi
+let userAnswers = []; // Tablica przechowująca odpowiedzi użytkownika
+
+// Funkcja rozpoczynająca quiz
 function startQuiz() {
-  currentquestionindex = 0;
-  correctAnswers = 0;
-  odpowiedziUzytkownika = []; // Resetowanie odpowiedzi użytkownika
-  przyciskDalej.innerHTML = "Dalej";
+  console.log("Rozpoczynanie quizu...");
+  currentQuestionIndex = 0;
+  correctCount = 0;
+  userAnswers = []; // Resetowanie odpowiedzi użytkownika
+  nextButton.innerHTML = "Dalej";
+  restartButton.style.display = "block"; // Zapewnienie widoczności przycisku restart
   showQuestion();
 }
 
-// funkcja do wyswietlania pytań
+// Funkcja wyświetlająca pytania
 function showQuestion() {
+  console.log("Wyświetlanie pytania:", questions[currentQuestionIndex]);
   reset();
-  let currentQuestion = pytania[currentquestionindex]; // pobieranie aktualnego pytania
-  let nrPytania = currentquestionindex + 1;
-  pytanieEl.innerHTML = nrPytania + ". " + currentQuestion.pytanie; // wyświetlanie pytania
+  let currentQuestion = questions[currentQuestionIndex]; // Pobieranie bieżącego pytania
+  let questionNumber = currentQuestionIndex + 1;
+  questionElement.innerHTML = questionNumber + ". " + currentQuestion.questionText; // Wyświetlanie pytania
 
-  // przyciski do odpowiedzi
-  currentQuestion.odp.forEach(odp => {
+  // Tworzenie przycisków odpowiedzi
+  currentQuestion.answers.forEach(answer => {
     const button = document.createElement("button");
-    button.innerHTML = odp.text; // Tekst odpowiedzi
+    button.innerHTML = answer.text; // Tekst odpowiedzi
     button.classList.add("btn");
-    wybierzodp.appendChild(button);
-    // Jeżeli odpowiedź jest poprawna dodajemy atrybut correct
-    if(odp.correct) {
-      button.dataset.correct = odp.correct;
+    answerContainer.appendChild(button);
+    // Dodanie atrybutu dla poprawnej odpowiedzi
+    if(answer.correct) {
+      button.dataset.correct = answer.correct;
     }
 
-    // Dodanie nasłuchiwania na kliknięcie przycisku
-    button.addEventListener("click", selectanswer);
+    // Dodanie nasłuchiwania kliknięcia przycisku
+    button.addEventListener("click", selectAnswer);
   });
 }
 
-// funkcja która zarządza wybranymi odpowiedziami
-function selectanswer(e) {
-  const selectedbtn = e.target; // pobieranie klikniętego przycisku
-  const czyPoprawna = selectedbtn.dataset.correct === "true"; // czy odpowiedz poprawna
-  if(czyPoprawna) {
-    selectedbtn.classList.add("correct"); // Jeżeli odpowiedź poprawna, dodajemy klasę correct
-    correctAnswers++; // Zwiększamy liczbę poprawnych odpowiedzi
+// Funkcja obsługująca wybór odpowiedzi
+function selectAnswer(e) {
+  const selectedButton = e.target; // Pobieranie klikniętego przycisku
+  const isCorrect = selectedButton.dataset.correct === "true"; // Sprawdzanie poprawności odpowiedzi
+  if(isCorrect) {
+    selectedButton.classList.add("correct"); // Dodanie klasy dla poprawnej odpowiedzi
+    correctCount++; // Zwiększenie licznika poprawnych odpowiedzi
   } else {
-    selectedbtn.classList.add("incorrect"); // Jeżeli odpowiedź błędna, dodajemy klasę incorrect
+    selectedButton.classList.add("incorrect"); // Dodanie klasy dla błędnej odpowiedzi
   }
 
-  // Zapisywanie odpowiedzi użytkownika (tekst odpowiedzi)
-  odpowiedziUzytkownika.push({
-    odpowiedz: selectedbtn.innerHTML,
-    poprawna: czyPoprawna
+  // Zapisanie odpowiedzi użytkownika
+  userAnswers.push({
+    answer: selectedButton.innerHTML,
+    correct: isCorrect
   });
 
-  // Wyłączamy przyciski po udzieleniu odpowiedzi
-  Array.from(wybierzodp.children).forEach(button => {
-    button.disabled = true; // blokowanie ponownego kliknięcia
+  // Wyłączenie przycisków po wyborze odpowiedzi
+  Array.from(answerContainer.children).forEach(button => {
+    button.disabled = true; // Blokada ponownego kliknięcia
     if(button.dataset.correct === "true") {
       button.classList.add("correct");
     }
   });
-  // Pokazujemy przycisk Dalej
-  przyciskDalej.style.display = "block";
+  // Pokazanie przycisku Dalej
+  nextButton.style.display = "block";
 }
 
-// funkcja do resetowania quizu
+// Funkcja resetująca stan quizu
 function reset() {
-  przyciskDalej.style.display="none";
-  while(wybierzodp.firstChild) {
-    wybierzodp.removeChild(wybierzodp.firstChild);
+  nextButton.style.display = "none";
+  while(answerContainer.firstChild) {
+    answerContainer.removeChild(answerContainer.firstChild);
   }
 }
 
-// Funkcja do przejścia do następnego pytania
-function nastepnyprzycisk() {
-  currentquestionindex++; // przejście do następnego pytania
-  if(currentquestionindex < pytania.length) {
-    showQuestion(); // wyswietlenie kolejnych pytań, jeśli są jeszcze
+// Funkcja przechodząca do następnego pytania
+function nextQuestion() {
+  currentQuestionIndex++; // Przejście do następnego pytania
+  if(currentQuestionIndex < questions.length) {
+    showQuestion(); // Wyświetlenie kolejnego pytania, jeśli istnieje
   } else {
-    pokazWynik(); // Jeśli nie ma już pytań, pokaż wynik końcowy
+    showResult(); // Wyświetlenie wyniku, jeśli brak pytań
   }
 }
 
-// Funkcja pokazująca wynik quizu
-function pokazWynik() {
+// Funkcja wyświetlająca wynik quizu
+function showResult() {
+  reset(); // Czyszczenie odpowiedzi, aby nie pokazywać przycisków z ostatniego pytania
   let message;
-  if (correctAnswers === pytania.length) {
-    message = "Świetnie! Ukończyłeś quiz w 100%!";
-  } else if (correctAnswers > pytania.length / 2) {
-    message = "Dobre wyniki! Możesz spróbować ponownie, aby zdobyć pełną liczbę punktów.";
+  if (correctCount === questions.length) {
+    message = "Brawo! Perfekcyjny wynik!";
+  } else if (correctCount > questions.length / 2) {
+    message = "Świetnie! Prawie idealnie!";
   } else {
-    message = "Pracuj nad sobą! Spróbuj ponownie!";
+    message = "Nieźle! Spróbuj jeszcze raz!";
   }
 
   // Wyświetlanie wyniku
-  pytanieEl.innerHTML = `${message} <br> Twoje wyniki: ${correctAnswers} z ${pytania.length} poprawnych odpowiedzi.`;
+  questionElement.innerHTML = `<h3>${message}</h3>Wynik: ${correctCount}/${questions.length} poprawnych`;
 
   // Wyświetlanie odpowiedzi użytkownika
-  let odpowiedziHTML = "<h3>Twoje odpowiedzi:</h3>";
-  odpowiedziUzytkownika.forEach((odpowiedz, index) => {
-    odpowiedziHTML += `<p> ${index + 1}. Twoja odpowiedź: ${odpowiedz.odpowiedz} - `;
-    odpowiedziHTML += odpowiedz.poprawna ? "Poprawna" : "Błędna";
-    odpowiedziHTML += "</p>";
+  let answersHTML = "<h4>Twoje odpowiedzi:</h4><ul>";
+  userAnswers.forEach((answer, index) => {
+    answersHTML += `<li>${index + 1}. ${answer.answer} - ${answer.correct ? "Poprawna" : "Błędna"}</li>`;
   });
+  answersHTML += "</ul>";
 
-  pytanieEl.innerHTML += odpowiedziHTML;
-  przyciskDalej.innerHTML = "Zacznij od nowa";
-  przyciskDalej.style.display = "block";
+  questionElement.innerHTML += answersHTML;
+  nextButton.innerHTML = "Zacznij od nowa";
+  nextButton.style.display = "block";
+  restartButton.style.display = "block"; // Zapewnienie widoczności przycisku restart
 }
 
-// Obsługa przycisku "Dalej"
-przyciskDalej.addEventListener("click", ()=>{  
-  if(currentquestionindex < pytania.length) {
-    nastepnyprzycisk();
+// Obsługa kliknięcia przycisku Dalej
+nextButton.addEventListener("click", () => {  
+  if(currentQuestionIndex < questions.length) {
+    nextQuestion();
   } else {
-    startQuiz(); // Jeśli quiz zakończony, uruchamiamy go od nowa
+    startQuiz(); // Ponowne uruchomienie quizu
   }
 });
 
-// Uruchomienie quizu
+// Obsługa kliknięcia przycisku Restart
+restartButton.addEventListener("click", startQuiz);
+
+// Rozpoczęcie quizu po załadowaniu strony
 startQuiz();
-
-
-
-
